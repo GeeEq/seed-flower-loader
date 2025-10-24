@@ -59,32 +59,39 @@ export default function SeedAndFlowerLoader() {
          </g>
 
          {/* Centered and rotating Seed of Life */}
-         <g
-           transform="translate(100,100)"
-           className="seed-rotate"
-          >
+         <g transform="translate(100,100)">
+         {/* Outer Flower of Life (stays static) */}
+         <g filter="url(#softGlow)">
+         </g>
 
-        <g filter="url(#glow)" fill="none" stroke={light} strokeWidth="2.2" strokeOpacity="0.98">
-        <circle cx="0" cy="0" r="18" />
-        <circle cx="0" cy="-18" r="18" />
-        <circle cx="15.588" cy="-9" r="18" />
-        <circle cx="15.588" cy="9" r="18" />
-        <circle cx="0" cy="18" r="18" />
-        <circle cx="-15.588" cy="9" r="18" />
-        <circle cx="-15.588" cy="-9" r="18" />
-         </g>
-        <circle cx="0" cy="0" r="6" fill={light} fillOpacity="0.9" filter="url(#glow)" />
-         </g>
+         {/* Rotating Seed of Life (centered perfectly) */}
+          <g className="seed-rotate" style={{ transformBox: "fill-box", transformOrigin: "center" }}>
+          <g filter="url(#glow)" fill="none" stroke={light} strokeWidth="2.2" strokeOpacity="0.98">
+           <circle cx="0" cy="0" r="18" />
+           <circle cx="0" cy="-18" r="18" />
+           <circle cx="15.588" cy="-9" r="18" />
+           <circle cx="15.588" cy="9" r="18" />
+           <circle cx="0" cy="18" r="18" />
+           <circle cx="-15.588" cy="9" r="18" />
+           <circle cx="-15.588" cy="-9" r="18" />
+           </g>
+           <circle cx="0" cy="0" r="6" fill={light} fillOpacity="0.9" filter="url(#glow)" />
+          </g>
+          </g>
+
           
           <style>{`
           .seed-rotate {
-           animation: spin 4s linear infinite;
-           }
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: spin 4s linear infinite;
+          }
 
-           @keyframes spin {
-           0% { transform: rotate(0deg); }
-           100% { transform: rotate(360deg); }
-            }
+          @keyframes spin {
+            0%   { transform: rotate(0deg); }
+            50%  { transform: rotate(180deg) scale(1.02); }
+            100% { transform: rotate(360deg); }
+          }
 
            .seed-rotate circle[fill] {
              animation: pulse 2.6s ease-in-out infinite;
