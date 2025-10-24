@@ -1,17 +1,14 @@
 import React from "react";
 
-export default function SeedAndFlowerLoader() {
-  const bg = "#111827"; // dark blue-gray
-  const light = "#7FD3FF"; // light blue
-
-  const svgSize = 100;
-  const viewBox = "0 0 200 200";
+const SeedAndFlowerLoader = ({ size = 100, seedScale = 1, speed = 4 }) => { 
+  const bg = "#111827"; 
+  const light = "#7FD3FF"; 
 
   return (
     <div
     style={{
-      width: "100vw",
-      height: "100vh",
+      width: `{size}px`,
+      height: `{size}px`,
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -19,16 +16,16 @@ export default function SeedAndFlowerLoader() {
       }}
       >
     
-     <svg viewBox={viewBox}
-       width={svgSize}
-       height={svgSize}
+     <svg viewBox="0 0 200 200"
+       width={size}
+       height={size}
        xmlns="http://www.w3.org/2000/svg"
        role="img"
        aria-label="Seed of life rotating inside Flower of Life loader">
 
        <defs>
         <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-           <feGaussianBlur stdDeviation="2.8" result="coloredBlur" />
+           <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
            <feMerge>
            <feMergeNode in="coloredBlur" />
            <feMergeNode in="SourceGraphic" />
@@ -45,66 +42,73 @@ export default function SeedAndFlowerLoader() {
         </filter>
        </defs>
 
-       {/* Flower of Life pattern centered */}
-         <g transform="translate(100,100)" filter="url(#softGlow)">
-         <g fill="none" stroke={light} strokeWidth="1.6" strokeOpacity="0.95">
-            <circle cx="0" cy="0" r="46" />
-            <circle cx="0" cy="-46" r="46" />
-            <circle cx="39.86" cy="-23" r="46" />
-            <circle cx="39.86" cy="23" r="46" />
-            <circle cx="0" cy="46" r="46" />
-            <circle cx="-39.86" cy="23" r="46" />
-            <circle cx="-39.86" cy="-23" r="46" />
-         </g>
-         </g>
-
-         {/* Centered and rotating Seed of Life */}
-         <g transform="translate(100,100)">
-         {/* Outer Flower of Life (stays static) */}
-         <g filter="url(#softGlow)">
-         </g>
-
-         {/* Rotating Seed of Life (centered perfectly) */}
-          <g className="seed-rotate" style={{ transformBox: "fill-box", transformOrigin: "center" }}>
-          <g filter="url(#glow)" fill="none" stroke={light} strokeWidth="2.2" strokeOpacity="0.98">
-           <circle cx="0" cy="0" r="18" />
-           <circle cx="0" cy="-18" r="18" />
-           <circle cx="15.588" cy="-9" r="18" />
-           <circle cx="15.588" cy="9" r="18" />
-           <circle cx="0" cy="18" r="18" />
-           <circle cx="-15.588" cy="9" r="18" />
-           <circle cx="-15.588" cy="-9" r="18" />
-           </g>
-           <circle cx="0" cy="0" r="6" fill={light} fillOpacity="0.9" filter="url(#glow)" />
+  {/*  Flower of Life (static, outer pattern) */}
+        <g
+          className="flower-rotate"
+          transform="translate(100,100)"
+          fill="none"
+          stroke={light}
+          strokeWidth="1.9"
+          strokeOpacity="0.6"
+          filter="url(#glow)"
+        >
+ {/* Central circle */}
+          {/* <circle cx="0" cy="0" r="35" /> */}
+ {/* Surrounding circles */}
+          <circle cx="0" cy="-40" r="40" />
+          <circle cx="34.64" cy="-20" r="40" />
+          <circle cx="34.64" cy="20" r="40" />
+          <circle cx="0" cy="40" r="40" />
+          <circle cx="0" cy="0" r="80" />
+          <circle cx="-34.64" cy="20" r="40" />
+          <circle cx="-34.64" cy="-20" r="40" />
+        </g>
+  {/*  Seed of Life (inner, rotating) */}
+        <g
+          className="seed-rotate"
+          transform="translate(100,100)"
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
+        >
+          <g transform={`scale(${seedScale})`}>
+            <g
+              filter="url(#glow)"
+              fill="none"
+              stroke={light}
+              strokeWidth="1.9"
+              strokeOpacity="0.6"
+            >
+              {/* <circle cx="0" cy="0" r="18" /> */}
+              <circle cx="0" cy="-18" r="18" />
+              <circle cx="15.588" cy="-9" r="18" />
+              <circle cx="15.588" cy="9" r="18" />
+              <circle cx="0" cy="18" r="18" />
+              <circle cx="-15.588" cy="9" r="18" />
+              <circle cx="-15.588" cy="-9" r="18" />
+            </g>
+            <circle cx="0" cy="0" r="2" fill={light} fillOpacity="1.9" filter="url(#glow)" />
           </g>
-          </g>
-
+        </g>
           
           <style>{`
           .seed-rotate {
-            transform-box: fill-box;
-            transform-origin: center;
-            animation: spin 4s linear infinite;
+            animation: spin ${speed}s linear infinite;
           }
-
+          .flower-rotate {
+          animation: spinReverse ${speed}s linear infinite;
+          }
           @keyframes spin {
-            0%   { transform: rotate(0deg); }
-            50%  { transform: rotate(180deg) scale(1.02); }
-            100% { transform: rotate(360deg); }
+           from { transform: translate(100px, 100px) rotate(0deg); }
+              to { transform: translate(100px, 100px) rotate(360deg); }
           }
+          @keyframes spinReverse {
+          from { transform: translate(100px, 100px) rotate(0deg);}
+          to {transform: translate(100px, 100px) rotate(-360deg);}}
 
-           .seed-rotate circle[fill] {
-             animation: pulse 2.6s ease-in-out infinite;
-            }
-
-           @keyframes pulse {
-            0% { r: 6; opacity: 0.95; filter: drop-shadow(0 0 6px ${light}); }
-            50% { r: 7; opacity: 1; filter: drop-shadow(0 0 12px ${light}); }
-            100% { r: 6; opacity: 0.95; filter: drop-shadow(0 0 6px ${light}); }
-             }
 `}</style>
 
       </svg>
     </div>
   );
 }
+
+export default SeedAndFlowerLoader;
